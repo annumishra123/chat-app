@@ -1,7 +1,9 @@
 import type { ChatSummary, Message, User } from './types';
 
+const BASE = import.meta.env.VITE_API_URL ?? '/api';
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`/api${path}`, { headers: { 'Content-Type': 'application/json' }, ...init });
+  const res = await fetch(`${BASE}${path}`, { headers: { 'Content-Type': 'application/json' }, ...init });
   const body = (await res.json().catch(() => null)) as { error?: string } | null;
   if (!res.ok) throw new Error(body?.error ?? `Request failed (${res.status})`);
   return body as T;
